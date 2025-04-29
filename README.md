@@ -1,54 +1,75 @@
 # Projet RabbitMQ – Calcul distribué
 
-## Description
+## Présentation
 
-Ce projet simule un système de calcul distribué :
-- Un client envoie automatiquement des opérations mathématiques toutes les 5 secondes.
-- Des workers spécialisés (`add`, `sub`, `mul`, `div`) réalisent les calculs.
-- Un client affiche les résultats en temps réel.
+Ce projet simule un système de calcul distribué. 
 
-Les opérations peuvent aussi être de type `"all"`, où tous les workers réalisent leur calcul.
+Un client envoie automatiquement toutes les 5 secondes des opérations mathématiques (add, sub, mul, div, ou all).  
+Des workers spécialisés effectuent les calculs et renvoient les résultats.  
+Un autre client lit et affiche les résultats.
 
 ## Prérequis
 
-- Docker
 - Python 3
-- pip install pika
+- Docker
+- Installer la bibliothèque Pika avec la commande suivante :
+  ```
+  pip install pika
+  ```
 
-## Installation
+## Lancer le serveur RabbitMQ
 
-1. Lancer Docker.
-2. Lancer un serveur RabbitMQ :
-    ```bash
-    docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
-    ```
-3. Installer la dépendance Python :
-    ```bash
-    pip install pika
-    ```
+Ce projet nécessite un serveur RabbitMQ.
 
-## Utilisation
+Pour cela, utilisez Docker avec la commande suivante :
+```
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+```
 
-1. Lancer le client émetteur :
-    ```bash
-    python client_send.py
-    ```
-2. Lancer 4 workers (dans 4 terminaux différents) :
-    ```bash
-    python worker.py add
-    python worker.py sub
-    python worker.py mul
-    python worker.py div
-    ```
-3. Lancer le client récepteur :
-    ```bash
-    python client_receive.py
-    ```
+Le serveur RabbitMQ sera disponible :
+- AMQP : localhost:5672
+- Interface Web : http://localhost:15672  
+  Identifiant : guest  
+  Mot de passe : guest
 
-## Fonctionnalité spéciale
+Lorsque le serveur a déjà été lancé une première fois, vous pouvez simplement le redémarrer avec :
+```
+docker start rabbitmq
+```
 
-- Le client peut envoyer une opération `"all"` : dans ce cas, **tous** les workers (`add`, `sub`, `mul`, `div`) exécutent chacun leur opération sur les mêmes nombres.
+## Lancer le projet
 
-## Auteurs
+1. Ouvrir plusieurs terminaux et se placer dans le dossier du projet.
 
-Projet réalisé dans le cadre d'un exercice de calcul distribué avec RabbitMQ.
+2. Dans un premier terminal, lancer le client émetteur :
+   ```
+   python client_send.py
+   ```
+
+3. Dans quatre autres terminaux, lancer les workers :
+   ```
+   python worker.py add
+   python worker.py sub
+   python worker.py mul
+   python worker.py div
+   ```
+
+4. Dans un dernier terminal, lancer le client qui reçoit les résultats :
+   ```
+   python client_receive.py
+   ```
+
+## Description des fichiers
+
+- client_send.py : envoie des opérations toutes les 5 secondes
+- worker.py : exécute l'opération demandée (addition, soustraction, multiplication, division)
+- client_receive.py : lit et affiche les résultats renvoyés
+- README.txt : fichier d'explication
+
+## Fonctionnalité supplémentaire
+
+Si l'opération envoyée est "all", tous les workers exécutent leur opération sur les mêmes nombres.
+
+## Auteur
+
+Projet réalisé par Rayane étudiant en dev management full stack groupe 3. Mail : rayane.rostane@hotmail.com
