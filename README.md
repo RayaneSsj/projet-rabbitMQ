@@ -72,4 +72,5 @@ Si l'opération envoyée est "all", tous les workers exécutent leur opération 
 
 ## Auteur
 
-Projet réalisé par Rayane étudiant en dev management full stack groupe 3. Mail : rayane.rostane@hotmail.com
+Projet réalisé par Rayane étudiant en dev management full stack groupe 3. Mail : rayane.rostane@efrei.net
+
